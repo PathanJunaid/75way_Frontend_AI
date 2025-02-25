@@ -7,6 +7,8 @@ cd Backend_AI
 python3 -m venv venv
 source venv/bin/activate
 pip install fastapi pandas numpy pydantic scikit-learn uvicorn
+
+uvicorn main:app --reload 
 ```
 
 ### Dependencies Used:

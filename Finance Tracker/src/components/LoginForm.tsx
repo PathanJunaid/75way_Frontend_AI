@@ -82,7 +82,8 @@ export default function LoginForm() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      // await loginUser(data).unwrap();
+      const res = await loginUser(data).unwrap();
+      console.log(res)
       toast.success("User logged in successfully!");
       navigate("/dashboard", { replace: true });
     } catch (error: any) {

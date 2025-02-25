@@ -1,4 +1,36 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from "@mui/material";
+import { useState } from "react";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Typography,
+    TablePagination,
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles({
+    pagination: {
+        "& .MuiTablePagination-root": {
+            color: "white",
+        },
+        "& .MuiTablePagination-toolbar": {
+            color: "white",
+        },
+        "& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows": {
+            color: "white !important",
+        },
+        "& .MuiTablePagination-selectIcon": {
+            color: "white",
+        },
+        "& .MuiTablePagination-actions button": {
+            color: "white",
+        },
+    },
+});
 
 interface CategoryWiseSpendingProps {
     categoryWiseSpending: {
@@ -10,6 +42,16 @@ interface CategoryWiseSpendingProps {
 }
 
 const CategoryWiseSpendingTable = ({ categoryWiseSpending, predictedMonths }: CategoryWiseSpendingProps) => {
+    const classes = useStyles();
+    const [page, setPage] = useState(0);
+    const rowsPerPage = 10;
+
+    // Convert object to an array for pagination
+    const categoriesArray = Object.entries(categoryWiseSpending);
+
+    // Paginate records
+    const paginatedCategories = categoriesArray.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+
     return (
         <>
             <Typography variant="h5" mt={4}>
@@ -30,7 +72,7 @@ const CategoryWiseSpendingTable = ({ categoryWiseSpending, predictedMonths }: Ca
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {Object.entries(categoryWiseSpending).map(([category, months]) => (
+                        {paginatedCategories.map(([category, months]) => (
                             <TableRow key={category}>
                                 <TableCell sx={{ color: "white" }}>{category}</TableCell>
                                 {predictedMonths.map((month) => (
@@ -43,6 +85,17 @@ const CategoryWiseSpendingTable = ({ categoryWiseSpending, predictedMonths }: Ca
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            {/* Pagination with Dark Theme */}
+            <TablePagination
+                component="div"
+                count={categoriesArray.length}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[10]}
+                onPageChange={(_, newPage) => setPage(newPage)}
+                className={classes.pagination}
+            />
         </>
     );
 };

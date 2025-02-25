@@ -6,9 +6,9 @@ function Basic() {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const navigation = useNavigate();
   React.useEffect(() => {
-    // if (isAuthenticated) {
-    //   navigation("/");
-    // }
+    if (isAuthenticated) {
+      navigation("/dashboard");
+    }
   }, [isAuthenticated]);
   return <Outlet />;
 }

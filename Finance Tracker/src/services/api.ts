@@ -25,9 +25,9 @@ export const api = createApi({
         return { url: `/users/login`, method: 'POST', body }
       },
     }),
-    register: builder.mutation<ApiResponse<User>, Omit<User, '_id' | 'active' | 'role'> & { confirmPassword: string }>({
+    register: builder.mutation<ApiResponse<User>, Omit<User, '_id' | 'active' | 'role'>>({
       query: (body) => {
-        return { url: `/users/register`, method: 'POST', body }
+        return { url: `/users/`, method: 'POST', body }
       },
     }),
     updateUser: builder.mutation<ApiResponse<User>, User>({

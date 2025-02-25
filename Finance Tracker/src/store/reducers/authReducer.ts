@@ -14,8 +14,7 @@ interface AuthState {
 const initialState: AuthState = {
   accessToken: localStorage.getItem('access_token') ?? "",
   refreshToken: localStorage.getItem('refresh_token') ?? "",
-  // isAuthenticated: Boolean(localStorage.getItem('access_token')),
-  isAuthenticated: true,
+  isAuthenticated: Boolean(localStorage.getItem('access_token')),
   loading: true,
 };
 
@@ -61,7 +60,7 @@ export const authSlice = createSlice({
         state.accessToken = '';
         state.refreshToken = '';
         // marked true as only frontend is needed
-        state.isAuthenticated = true;
+        state.isAuthenticated = false;
         state.loading = false;
         return state
       }),

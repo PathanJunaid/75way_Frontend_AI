@@ -56,6 +56,7 @@ export default function Authenticated() {
     { text: "Budget", path: "/budget" },
     { text: "Analysis", path: "/analysis" },
     { text: "Transactions", path: "/transactions" },
+    { text: "Prediction", path: "/predict" },
   ];
 
   // Drawer for mobile menu
@@ -84,8 +85,8 @@ export default function Authenticated() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: "#2c3e50" }}>
+    <Box sx={{ flexGrow: 1}}>
+      <AppBar position="static" sx={{ backgroundColor: "#2c3e50", position: "sticky", top: 0 }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           {/* Left: App Name */}
           <Typography
