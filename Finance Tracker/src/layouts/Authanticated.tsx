@@ -52,7 +52,7 @@ export default function Authenticated() {
   }, [isAuthenticated]);
 
   const menuItems = [
-    { text: "Dashboard", path: "/dashboard" },
+    { text: "Dashboard", path: "/" },
     { text: "Budget", path: "/budget" },
     { text: "Analysis", path: "/analysis" },
     { text: "Transactions", path: "/transactions" },

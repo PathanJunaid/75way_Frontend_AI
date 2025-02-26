@@ -23,7 +23,7 @@ export default function OnErrorPage() {
                 variant="contained"
                 color="primary"
                 component={Link}
-                to="/dashboard"
+                to="/"
                 sx={{ mt: 2 }}
             >
                 Go to Dashboard
