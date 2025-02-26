@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from starlette.middleware.gzip import GZipMiddleware
 from fastapi.middleware.cors import CORSMiddleware
-
+from schemas import Transaction
 from model import train_model, predict_future_spending
 
 app = FastAPI()
@@ -16,11 +16,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-class Transaction(BaseModel):
-    date: str
-    amount: float
-    transaction_type: str
-    category: str
+# class Transaction(BaseModel):
+#     date: str
+#     amount: float
+#     transaction_type: str
+#     category: str
 
 class SpendingRequest(BaseModel):
     transactions: list[Transaction]
