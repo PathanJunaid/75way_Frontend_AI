@@ -66,7 +66,7 @@ type FormData = typeof validation.__outputType;
 export default function LoginForm() {
   const theme = useTheme();
   const style = useStyle(theme);
-  const [loginUser] = useLoginMutation();
+  const [loginUser, {isLoading}] = useLoginMutation();
   const navigate = useNavigate();
   const {
     register,
@@ -82,10 +82,9 @@ export default function LoginForm() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const res = await loginUser(data).unwrap();
-      console.log(res)
+      await loginUser(data).unwrap();
       toast.success("User logged in successfully!");
-      navigate("/dashboard", { replace: true });
+      navigate("/", { replace: true });
     } catch (error: any) {
       const validationError = error?.data?.data?.errors?.[0]?.msg;
       toast.error(validationError ?? error?.data?.message ?? "Something went wrong!");
@@ -143,7 +142,7 @@ export default function LoginForm() {
                   sx={style.button}
                   variant="contained"
                   fullWidth
-                // disabled={!isValid}
+                disabled={isLoading}
                 >
                   Log in
                 </Button>

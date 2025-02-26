@@ -8,7 +8,6 @@ from model import train_model, predict_future_spending
 
 app = FastAPI()
 
-# Middleware to allow large payloads
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
 app.add_middleware(
     CORSMiddleware,

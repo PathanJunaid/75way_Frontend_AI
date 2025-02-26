@@ -52,7 +52,7 @@ export default function Authenticated() {
   }, [isAuthenticated]);
 
   const menuItems = [
-    { text: "Dashboard", path: "/dashboard" },
+    { text: "Dashboard", path: "/" },
     { text: "Budget", path: "/budget" },
     { text: "Analysis", path: "/analysis" },
     { text: "Transactions", path: "/transactions" },
@@ -86,7 +86,7 @@ export default function Authenticated() {
 
   return (
     <Box sx={{ flexGrow: 1}}>
-      <AppBar position="static" sx={{ backgroundColor: "#2c3e50", position: "sticky", top: 0 }}>
+      <AppBar position="static" sx={{ backgroundColor: "#2c3e50", position: "sticky", top: 0, zIndex: 10}}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           {/* Left: App Name */}
           <Typography
@@ -160,9 +160,6 @@ export default function Authenticated() {
                   horizontal: "right",
                 }}
               >
-                <MenuItem onClick={() => handleMenuItemClick("profile")}>
-                  Profile
-                </MenuItem>
                 <MenuItem onClick={() => handleMenuItemClick("logout")}>
                   Logout
                 </MenuItem>

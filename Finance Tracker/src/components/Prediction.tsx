@@ -9,12 +9,16 @@ import {
     TextField,
     Typography,
     CircularProgress,
+    FormControl,
+    FormHelperText,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { usePredictMutation } from "../services/api";
 import PredictedSpendingTable from "./PredictedSpendingTable";
 import CategoryWiseSpendingTable from "./CategoryWiseSpendingTable";
 import { toast } from "react-toastify";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "./ErrorFallback";
 
 const validation = yup.object().shape({
     months: yup
@@ -29,7 +33,7 @@ type FormData = { months: number };
 const useStyles = makeStyles({
     formContainer: {
         display: "flex",
-        alignItems: "center",
+        // alignItems: "center",
         width: "100%",
     },
     inputField: {
@@ -48,9 +52,6 @@ const useStyles = makeStyles({
     },
     submitButton: {
         height: "56px",
-        minWidth: "120px",
-        borderTopLeftRadius: 0,
-        borderBottomLeftRadius: 0,
         padding: "10px 20px",
         fontSize: "16px",
         background: "linear-gradient(135deg, #ff8c00, #ff3d00)",
@@ -116,45 +117,51 @@ const Prediction = () => {
     };
 
     return (
-        <Box textAlign="center" p={4} sx={{ backgroundColor: "#121212", minHeight: "100vh", color: "white" }}>
-            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                <Typography variant="h4" gutterBottom>
-                    Spending Prediction
-                </Typography>
-                <Typography variant="h6" gutterBottom>
-                    get prediction for upcoming months
-                </Typography>
-                <Box component="form" className={classes.formContainer} onSubmit={handleSubmit(onSubmit)}>
-                    <TextField
-                        label="Enter number of months"
-                        type="text"
-                        {...register("months")}
-                        error={!!errors.months}
-                        helperText={errors.months?.message}
-                        className={classes.inputField}
-                    />
-                    <Button type="submit" variant="contained" disabled={loading} className={classes.submitButton}>
-                        {loading ? "Processing..." : "Submit"}
-                    </Button>
-                </Box>
-            </motion.div>
-
-            {loading && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} style={{ marginTop: 20 }}>
-                    <CircularProgress sx={{ color: "#ff8c00" }} />
-                    <Typography mt={2} variant="body1">
-                        Predicting your spending...
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Box textAlign="center" p={4} sx={{ backgroundColor: "#121212", minHeight: "100vh", color: "white" }}>
+                <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                    <Typography variant="h4" gutterBottom>
+                        Spending Prediction
                     </Typography>
-                </motion.div>
-            )}
+                    <Typography variant="h6" gutterBottom>
+                        get prediction for upcoming months
+                    </Typography>
+                    <Box component="form" className={classes.formContainer} onSubmit={handleSubmit(onSubmit)}>
+                        <FormControl className={classes.inputField} fullWidth>
+                            <TextField
+                                label="Enter number of months"
+                                type="text"
+                                {...register("months")}
+                                error={!!errors.months}
+                            />
+                            <FormHelperText sx={{ minHeight: "20px", color: "red" }}>
+                                {errors.months?.message}
+                            </FormHelperText>
+                        </FormControl>
 
-            {data && !loading && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.3 }}>
-                    <PredictedSpendingTable predictedSpending={data.predicted_spending} loading={loading} />
-                    <CategoryWiseSpendingTable categoryWiseSpending={data.category_wise} predictedMonths={Object.keys(data.predicted_spending)} />
+                        <Button sx={{ borderRadius: '0px 10px 10px 0px', minWidth: 150 }} type="submit" variant="contained" disabled={loading} className={classes.submitButton}>
+                            {loading ? "Processing..." : "Submit"}
+                        </Button>
+                    </Box>
                 </motion.div>
-            )}
-        </Box>
+
+                {loading && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} style={{ marginTop: 20 }}>
+                        <CircularProgress sx={{ color: "#ff8c00" }} />
+                        <Typography mt={2} variant="body1">
+                            Predicting your spending...
+                        </Typography>
+                    </motion.div>
+                )}
+
+                {data && !loading && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.3 }}>
+                        <PredictedSpendingTable predictedSpending={data.predicted_spending} loading={loading} />
+                        <CategoryWiseSpendingTable categoryWiseSpending={data.category_wise} predictedMonths={Object.keys(data.predicted_spending)} />
+                    </motion.div>
+                )}
+            </Box>
+        </ErrorBoundary>
     );
 };
 
