@@ -20,7 +20,6 @@ def train_model(transactions):
     if len(monthly_expenses) < 2:  # Handle case with only 1 month of data
         last_amount = monthly_expenses["amount"].iloc[-1]
         return None, len(monthly_expenses), last_amount, df
-    
     # Train Linear Regression Model
     X = monthly_expenses[["time_index"]]
     y = monthly_expenses["amount"]
@@ -46,7 +45,7 @@ def predict_category_wise(df, future_indices, future_dates):
             cat_model = LinearRegression()
             cat_model.fit(monthly_category_expenses[["time_index"]], monthly_category_expenses["amount"])
             
-            category_preds = cat_model.predict(future_indices)
+            category_preds = cat_model.predict(pd.DataFrame(future_indices, columns=["time_index"]))
             category_predictions[category] = {
                 future_dates[i]: round(category_preds[i], 2) for i in range(len(future_dates))
             }
@@ -54,7 +53,6 @@ def predict_category_wise(df, future_indices, future_dates):
     return category_predictions
 
 def predict_future_spending(model, last_index, last_amount, months, df):
-    
     future_dates = [
         (datetime.now() + timedelta(days=30 * i)).strftime("%Y-%m")
         for i in range(1, months + 1)
@@ -65,7 +63,7 @@ def predict_future_spending(model, last_index, last_amount, months, df):
             "predicted_spending": {date: last_amount for date in future_dates},
             "increase_percentage": 0.0,  # No increase since we have only 1 data point
         }
-    future_indices = [[last_index + i] for i in range(1, months + 1)]
+    future_indices = pd.DataFrame([[last_index + i] for i in range(1, months + 1)], columns=["time_index"])
     predictions = model.predict(future_indices)
     
     predicted_spending = {

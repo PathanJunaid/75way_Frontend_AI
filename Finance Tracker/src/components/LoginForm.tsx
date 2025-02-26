@@ -66,7 +66,7 @@ type FormData = typeof validation.__outputType;
 export default function LoginForm() {
   const theme = useTheme();
   const style = useStyle(theme);
-  const [loginUser] = useLoginMutation();
+  const [loginUser, {isLoading}] = useLoginMutation();
   const navigate = useNavigate();
   const {
     register,
@@ -142,7 +142,7 @@ export default function LoginForm() {
                   sx={style.button}
                   variant="contained"
                   fullWidth
-                // disabled={!isValid}
+                disabled={isLoading}
                 >
                   Log in
                 </Button>
