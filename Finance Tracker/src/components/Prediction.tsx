@@ -102,11 +102,16 @@ const Prediction = () => {
         setLoading(true);
         try {
             const res = await predict(formData).unwrap();
-            setData({
-                predicted_spending: res.data.predicted_spending,
-                category_wise: res.data.category_wise || {},
-            });
-            toast.success('Success')
+            console.log(res);
+            if (res.data.predicted_spending) {
+                setData({
+                    predicted_spending: res.data.predicted_spending,
+                    category_wise: res.data.category_wise || {},
+                });
+                toast.success('Success')
+            }else{
+                toast.error(res?.message)
+            }
         } catch (error: any) {
             const validationError = error?.data?.data?.errors?.[0]?.msg;
             toast.error(validationError ?? error?.data?.message ?? "Something went wrong!");
